@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="text-align-baseline">
     <label class="text-muted me-2" for="nameInput">File: </label>
     <input 
       v-show="currentlyEditing"
@@ -11,7 +11,9 @@
     <span 
       v-show="!currentlyEditing"
       @click="startEditing"
-      > {{ name }} </span>
+      > {{ name }}
+      <font-awesome-icon icon="pencil-alt" class="ms-1" />
+    </span>
   </div>
 </template>
 
