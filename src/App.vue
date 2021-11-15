@@ -1,27 +1,39 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
+  <main class="container mx-auto vh-100">
+    <h1 class="display-2 text-center mb-3">Marky</h1>
+    <div class="row">
+      <div class="col vh-100">
+        <textarea v-model="text"></textarea>
+      </div>
+      <div class="col" v-html="markdown"></div>
+    </div>
+  </main>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import HelloWorld from './components/HelloWorld.vue';
+import Markdown from 'markdown-it';
+
+const md = new Markdown();
 
 export default defineComponent({
   name: 'App',
-  components: {
-    HelloWorld
-  }
+  data: () => ({
+    text: ""
+  } as { 
+    text: string;
+  }),
+  computed: {
+    markdown() {
+      return md.render(this.text);
+    },
+  },
 });
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+<style scoped>
+textarea {
+  width: 100%;
+  height: 100%
 }
 </style>
