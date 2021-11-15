@@ -3,7 +3,7 @@
     <h1 class="display-2 text-center mb-3">Marky</h1>
     <div class="row mb-2">
       <the-name class="col" @set-name="setName"></the-name>
-      <the-file-selector class="col" :files="files" :current="name"></the-file-selector>
+      <the-file-selector class="col" :files="files" :current="name" @set-file="setFile"></the-file-selector>
     </div>
     <div class="row h-75">
       <the-editor class="col" v-model="text"></the-editor>
@@ -37,6 +37,15 @@ export default defineComponent({
   components: {
     TheEditor, TheRender, TheName, TheFileSelector
   },
+  mounted() {
+    Object.keys(localStorage).forEach(key => {
+      this.files.push(key);
+    });
+    if (this.files.length !== 0) {
+      this.name = this.files[0];
+      this.text = localStorage.getItem(this.files[0]) ?? '';
+    }
+  },
   methods: {
     save(): void {
       localStorage.setItem(this.name, this.text); 
@@ -46,6 +55,10 @@ export default defineComponent({
     },
     setName(name: string) {
       this.name = name;
+    },
+    setFile(file: string) {
+      this.name = file;
+      this.text = localStorage.getItem(file) ?? '';
     },
   },
 });
