@@ -1,8 +1,8 @@
 <template>
   <main class="container mx-auto vh-100">
     <h1 class="display-2 text-center mb-3">Marky</h1>
-    <div class="row">
-      <div class="col vh-100">
+    <div class="row h-75">
+      <div class="col">
         <textarea v-model="text"></textarea>
       </div>
       <div class="col" v-html="markdown"></div>
