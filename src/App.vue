@@ -2,12 +2,15 @@
   <main class="container mx-auto vh-100">
     <h1 class="display-2 text-center mb-3">Marky</h1>
     <div class="row mb-2">
-      <the-name class="col"></the-name>
-      <the-file-selector class="col" :files="files"></the-file-selector>
+      <the-name class="col" @set-name="setName"></the-name>
+      <the-file-selector class="col" :files="files" :current="name"></the-file-selector>
     </div>
     <div class="row h-75">
       <the-editor class="col" v-model="text"></the-editor>
       <the-render class="col" :input="text"></the-render>
+    </div>
+    <div class="text-center">
+      <button class="btn btn-primary mx-auto my-3" @click="save">Save</button>
     </div>
   </main>
 </template>
@@ -24,13 +27,26 @@ export default defineComponent({
   name: 'App',
   data: () => ({
     text: "",
+    name: "",
     files: [],
   } as { 
     text: string;
+    name: string;
     files: string[];
   }),
   components: {
     TheEditor, TheRender, TheName, TheFileSelector
+  },
+  methods: {
+    save(): void {
+      localStorage.setItem(this.name, this.text); 
+      if (!this.files.includes(this.name)) {
+        this.files.push(this.name);
+      }
+    },
+    setName(name: string) {
+      this.name = name;
+    },
   },
 });
 </script>

@@ -21,6 +21,7 @@
 import { defineComponent } from 'vue';
 
 export default defineComponent({
+  emits: [ "set-name" ],
   data: () => ({
     name: 'Untitled',
     currentlyEditing: false,
@@ -28,6 +29,9 @@ export default defineComponent({
     name: string;
     currentlyEditing: boolean;
   }),
+  mounted() {
+    this.setName();
+  },
   methods: {
     startEditing(): void {
       this.currentlyEditing = true;
@@ -38,6 +42,10 @@ export default defineComponent({
     },  
     endEditing(): void {
       this.currentlyEditing = false;
+      this.setName();
+    },
+    setName(): void {
+      this.$emit("set-name", this.name);
     },
   },
 });
