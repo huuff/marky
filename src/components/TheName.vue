@@ -32,8 +32,10 @@ export default defineComponent({
     startEditing(): void {
       this.currentlyEditing = true;
 
-      this.$nextTick(() => this.$refs.input.focus());
-    },
+      this.$nextTick(() => {
+        (this.$refs.input as HTMLInputElement).focus();
+      });
+    },  
     endEditing(): void {
       this.currentlyEditing = false;
     },

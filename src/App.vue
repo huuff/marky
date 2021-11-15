@@ -1,7 +1,7 @@
 <template>
   <main class="container mx-auto vh-100">
     <h1 class="display-2 text-center mb-3">Marky</h1>
-    <name-input class="mb-2"></name-input>
+    <the-name class="mb-2"></the-name>
     <div class="row h-75">
       <the-editor class="col" v-model="text"></the-editor>
       <the-render class="col" :input="text"></the-render>
@@ -13,7 +13,7 @@
 import { defineComponent } from 'vue';
 import TheEditor from './components/TheEditor.vue';
 import TheRender from './components/TheRender.vue';
-import NameInput from './components/TheNameInput.vue';
+import TheName from './components/TheName.vue';
 
 export default defineComponent({
   name: 'App',
@@ -23,7 +23,7 @@ export default defineComponent({
     text: string;
   }),
   components: {
-    TheEditor, TheRender, NameInput,
+    TheEditor, TheRender, TheName,
   },
 });
 </script>
