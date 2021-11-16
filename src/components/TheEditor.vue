@@ -4,6 +4,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+//@ts-ignore
 import Codemirror from "codemirror-editor-vue3";
 
 // plugin-style
