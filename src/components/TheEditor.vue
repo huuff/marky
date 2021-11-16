@@ -1,12 +1,32 @@
 <template>
-  <textarea v-model="value"></textarea>
+  <codemirror :options="cmOptions" v-model:value="value" id="editor"></codemirror>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import Codemirror from "codemirror-editor-vue3";
+
+// plugin-style
+import "codemirror-editor-vue3/dist/style.css";
+
+// language
+import "codemirror/mode/markdown/markdown.js";
 
 export default defineComponent({
   emits: [ "update:modelValue" ],
+  data() {
+    return {
+      cmOptions:{
+        mode: 'text/markdown', // Language mode
+        theme: 'default', // Theme
+        lineNumbers: true, // Show line number
+        smartIndent: true, // Smart indent
+        indentUnit: 2, // The smart indent unit is 2 spaces in length
+        foldGutter: true, // Code folding
+        styleActiveLine: true, // Display the style of the selected row
+      }
+    };
+  },
   props: {
     modelValue: String,
   }, 
@@ -20,12 +40,15 @@ export default defineComponent({
       },
     },
   },
+  components: {
+    Codemirror
+  }
 })
 </script>
 
 <style scoped>
-textarea {
-  width: 100%;
-  height: 100%;
+#editor {
+  font-size: 16px;
+  font-family: monospace, monospace;
 }
 </style>
