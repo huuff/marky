@@ -47,9 +47,9 @@ export default defineComponent({
 })
 </script>
 
-<style scoped>
-#editor {
+<style >
+.CodeMirror {
   font-size: 16px;
-  font-family: monospace, monospace;
+  font-family: 'Source Code Pro', monospace !important;
 }
 </style>

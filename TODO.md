@@ -1,2 +1,3 @@
 # Tasks
-* Some better font for the editor
+* Use vuex
+* Vue router for each file
