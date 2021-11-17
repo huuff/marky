@@ -25,6 +25,12 @@ import TheFileSelector from './components/TheFileSelector.vue';
 
 export default defineComponent({
   name: 'App',
+  props: {
+    filename: {
+      type: String,
+      required: false,
+    },
+  },
   data: () => ({
     text: "",
     name: "",
@@ -41,9 +47,9 @@ export default defineComponent({
     Object.keys(localStorage).forEach(key => {
       this.files.push(key);
     });
-    if (this.files.length !== 0) {
-      this.name = this.files[0];
-      this.text = localStorage.getItem(this.files[0]) ?? '';
+    if (this.filename) {
+      this.name = this.filename;
+      this.text = localStorage.getItem(this.filename) ?? '';
     }
   },
   methods: {
