@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import App from './App.vue';
 import AppWrapper from './AppWrapper.vue'
 import * as VueRouter from 'vue-router';
+import store from './store';
 import "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -22,4 +23,5 @@ const router = VueRouter.createRouter({
 createApp(AppWrapper)
   .component('font-awesome-icon', FontAwesomeIcon)
   .use(router)
+  .use(store)
   .mount('#app')

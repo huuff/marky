@@ -9,19 +9,20 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue';
+import { defineComponent, } from 'vue';
 
 export default defineComponent({
   emits: [ "set-file" ],
   props: {
-    files: {
-      type: Array as PropType<Array<string>>,
-      required: true
-    },
     current: {
       type: String,
       required: true
     },
+  },
+  computed: {
+    files() {
+      return this.$store.getters.files;
+    }
   },
   methods: {
     setFile(event: Event) {
