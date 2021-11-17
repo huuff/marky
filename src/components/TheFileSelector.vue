@@ -27,7 +27,7 @@ export default defineComponent({
     setFile(event: Event) {
       const selector = event.target as HTMLSelectElement;
       if (selector.value !== null) {
-        this.$emit("set-file", selector.value);
+        this.$router.push(selector.value)
       }
     }
   },

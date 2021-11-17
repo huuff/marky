@@ -48,9 +48,11 @@ export default defineComponent({
       this.files.push(key);
     });
     if (this.filename) {
-      this.name = this.filename;
-      this.text = localStorage.getItem(this.filename) ?? '';
+      this.setFile(this.filename);
     }
+  },
+  beforeRouteUpdate(to: any) {
+    this.setFile(to.params.filename as string);
   },
   methods: {
     save(): void {
