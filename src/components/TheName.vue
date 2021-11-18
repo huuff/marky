@@ -11,6 +11,7 @@
     <span 
       v-show="!currentlyEditing"
       @click="startEditing"
+      class="clickable"
       > {{ name }}
       <font-awesome-icon icon="pencil-alt" class="ms-1" />
     </span>
@@ -58,3 +59,8 @@ export default defineComponent({
 });
 </script>
 
+<style scoped>
+.clickable {
+  cursor: pointer;
+}
+</style>
