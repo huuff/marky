@@ -2,8 +2,8 @@
   <main class="container mx-auto vh-100">
     <h1 class="display-2 text-center mb-3">Editor</h1>
     <div class="row mb-2">
-      <the-name class="col" v-model="name"></the-name>
-      <the-file-selector class="col" :current="name" @set-file="setFile"></the-file-selector>
+      <the-name class="col" v-model="fileName"></the-name>
+      <the-file-selector class="col" :current="fileName" @set-file="setFile"></the-file-selector>
     </div>
     <div class="row h-75">
       <the-editor class="col" v-model="text"></the-editor>
@@ -26,23 +26,23 @@ import TheFileSelector from './components/TheFileSelector.vue';
 export default defineComponent({
   name: 'App',
   props: {
-    filename: {
+    routeName: {
       type: String,
       required: false,
     },
   },
   data: () => ({
     text: "",
-    name: "", //TODO: Better naming for this
+    fileName: "",
   } as { 
     text: string;
-    name: string;
+    fileName: string;
   }),
   components: {
     TheEditor, TheRender, TheName, TheFileSelector
   },
   watch: {
-    filename(value: string) {
+    routeName(value: string) {
       this.setFile(value);
     },
   },
@@ -51,22 +51,22 @@ export default defineComponent({
     Object.keys(localStorage).forEach(key => {
       this.$store.dispatch("addFile", key);
     });
-    if (this.filename) {
-      this.setFile(this.filename);
+    if (this.routeName) {
+      this.setFile(this.routeName);
     } else {
-      this.name = this.$store.getters.nextUntitled; 
+      this.fileName = this.$store.getters.nextUntitled; 
     }
   },
   methods: {
     save(): void {
-      localStorage.setItem(this.name, this.text); 
+      localStorage.setItem(this.fileName, this.text); 
       // TODO: better vuex usage
-      if (!this.$store.files.includes(this.name)) {
-        this.$store.files.push(this.name);
+      if (!this.$store.files.includes(this.fileName)) {
+        this.$store.files.push(this.fileName);
       }
     },
     setName(name: string) {
-      this.name = name;
+      this.fileName = name;
     },
     setFile(file: string) {
       this.setName(file);

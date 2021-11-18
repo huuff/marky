@@ -14,7 +14,7 @@ library.add(faPencilAlt);
 const router = VueRouter.createRouter({
   history: VueRouter.createWebHistory(),
   routes: [
-    { path: '/:filename?', component: App, props: true}
+    { path: '/:routeName?', component: App, props: true}
   ],
 });
 
