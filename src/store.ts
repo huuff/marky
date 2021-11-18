@@ -28,7 +28,10 @@ const store = createStore({
       } else {
         return `Untitled${untitledIndices[untitledIndices.length - 1] + 1}`;
       }
-    }
+    },
+    fileExists(_:any, getters: any) {
+      return (filename: string) => getters.files.includes(filename);
+    },
   },
 
   mutations: {

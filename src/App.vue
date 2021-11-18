@@ -69,9 +69,8 @@ export default defineComponent({
   methods: {
     save(): void {
       localStorage.setItem(this.fileName, this.text); 
-      // TODO: better vuex usage
-      if (!this.$store.files.includes(this.fileName)) {
-        this.$store.files.push(this.fileName);
+      if (!this.$store.getters.fileExists(this.fileName)) {
+        this.$store.dispatch("addFile", this.fileName);
       }
     },
     setName(name: string) {
