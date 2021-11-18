@@ -2,8 +2,7 @@
   <main class="container mx-auto vh-100">
     <h1 class="display-2 text-center mb-3">Editor</h1>
     <div class="row mb-2">
-      <the-name class="col" @set-name="setName"></the-name>
-      <!-- TODO: remove the set-file binding -->
+      <the-name class="col" v-model="name"></the-name>
       <the-file-selector class="col" :current="name" @set-file="setFile"></the-file-selector>
     </div>
     <div class="row h-75">
@@ -34,7 +33,7 @@ export default defineComponent({
   },
   data: () => ({
     text: "",
-    name: "",
+    name: "", //TODO: Better naming for this
   } as { 
     text: string;
     name: string;
@@ -43,6 +42,7 @@ export default defineComponent({
     TheEditor, TheRender, TheName, TheFileSelector
   },
   mounted() {
+  // TODO: can I do this in store.ts?
     Object.keys(localStorage).forEach(key => {
       this.$store.dispatch("addFile", key);
     });
@@ -65,7 +65,8 @@ export default defineComponent({
       this.name = name;
     },
     setFile(file: string) {
-      this.name = file;
+      console.log(`Setting file to ${file}`);
+      this.setName(file);
       this.text = localStorage.getItem(file) ?? '';
     },
   },

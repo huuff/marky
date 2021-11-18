@@ -21,16 +21,30 @@
 import { defineComponent } from 'vue';
 
 export default defineComponent({
-  emits: [ "set-name" ],
+  emits: [ "update:modelValue" ],
+  props: {
+    modelValue: {
+      type: String,
+      required: true,
+    },
+  },
   data: () => ({
-    name: 'Untitled',
     currentlyEditing: false,
   } as {
-    name: string;
     currentlyEditing: boolean;
   }),
+  computed: {
+    name: {
+      get() {
+        return this.modelValue;
+      },
+      set(value: string) {
+        this.$emit('update:modelValue', value);
+      }
+    }
+  },
   mounted() {
-    this.setName();
+    this.name = "Untitled";
   },
   methods: {
     startEditing(): void {
@@ -42,10 +56,6 @@ export default defineComponent({
     },  
     endEditing(): void {
       this.currentlyEditing = false;
-      this.setName();
-    },
-    setName(): void {
-      this.$emit("set-name", this.name);
     },
   },
 });
