@@ -33,7 +33,6 @@ export default defineComponent({
   },
   data: () => ({
     text: "",
-    fileName: "",
   } as { 
     text: string;
     fileName: string;
@@ -44,6 +43,16 @@ export default defineComponent({
   watch: {
     routeName(value: string) {
       this.setFile(value);
+    },
+  },
+  computed: {
+    fileName: {
+      get(): string {
+        return this.routeName ?? '';
+      },
+      set(value: string) {
+        return this.$router.replace(value);
+      }
     },
   },
   mounted() {
