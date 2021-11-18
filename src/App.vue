@@ -1,6 +1,6 @@
 <template>
   <main class="container mx-auto vh-100">
-    <h1 class="display-2 text-center mb-3">Marky</h1>
+    <h1 class="display-2 text-center mb-3">Editor</h1>
     <div class="row mb-2">
       <the-name class="col" @set-name="setName"></the-name>
       <!-- TODO: remove the set-file binding -->
@@ -56,6 +56,7 @@ export default defineComponent({
   methods: {
     save(): void {
       localStorage.setItem(this.name, this.text); 
+      // TODO: better vuex usage
       if (!this.$store.files.includes(this.name)) {
         this.$store.files.push(this.name);
       }
