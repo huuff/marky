@@ -41,6 +41,11 @@ export default defineComponent({
   components: {
     TheEditor, TheRender, TheName, TheFileSelector
   },
+  watch: {
+    filename(value: string) {
+      this.setFile(value);
+    },
+  },
   mounted() {
   // TODO: can I do this in store.ts?
     Object.keys(localStorage).forEach(key => {
@@ -51,9 +56,6 @@ export default defineComponent({
     } else {
       this.name = this.$store.getters.nextUntitled; 
     }
-  },
-  beforeRouteUpdate(to: any) {
-    this.setFile(to.params.filename as string);
   },
   methods: {
     save(): void {
@@ -67,7 +69,6 @@ export default defineComponent({
       this.name = name;
     },
     setFile(file: string) {
-      console.log(`Setting file to ${file}`);
       this.setName(file);
       this.text = localStorage.getItem(file) ?? '';
     },
