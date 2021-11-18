@@ -42,7 +42,9 @@ export default defineComponent({
   },
   watch: {
     routeName(value: string) {
-      this.setFile(value);
+      if (this.$store.getters.fileExists(value)) {
+        this.setFile(value);
+      }
     },
   },
   computed: {
