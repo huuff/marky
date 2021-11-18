@@ -1,5 +1,7 @@
 import { createStore } from 'vuex';
 
+// TODO: Manage to get tis typed
+
 const store = createStore({
   state() {
     return {
@@ -10,6 +12,23 @@ const store = createStore({
     files(state: any) {
       return state.files; 
     },
+    nextUntitled(_: any, getters: any) {
+      const regex = /Untitled(\d+)?/;
+      const untitledIndices: number[] = getters.files
+        .map((file: string) => file.match(regex))
+        .filter((matches: string[]) => matches)
+        .map((matches: string[]) => matches[1])
+        .filter((matchedNumber: string) => matchedNumber)
+        .map((matchedNumber: string) => +matchedNumber)
+        ;
+      untitledIndices.sort();
+
+      if (untitledIndices.length === 0) {
+        return "Untitled";
+      } else {
+        return `Untitled${untitledIndices[untitledIndices.length - 1] + 1}`;
+      }
+    }
   },
 
   mutations: {

@@ -43,9 +43,6 @@ export default defineComponent({
       }
     }
   },
-  mounted() {
-    this.name = "Untitled";
-  },
   methods: {
     startEditing(): void {
       this.currentlyEditing = true;

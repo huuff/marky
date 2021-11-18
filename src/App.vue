@@ -48,6 +48,8 @@ export default defineComponent({
     });
     if (this.filename) {
       this.setFile(this.filename);
+    } else {
+      this.name = this.$store.getters.nextUntitled; 
     }
   },
   beforeRouteUpdate(to: any) {
