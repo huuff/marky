@@ -58,10 +58,6 @@ export default defineComponent({
     },
   },
   mounted() {
-  // TODO: can I do this in store.ts?
-    Object.keys(localStorage).forEach(key => {
-      this.$store.dispatch("addFile", key);
-    });
     if (this.routeName) {
       this.setFile(this.routeName);
     } else {

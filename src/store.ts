@@ -5,7 +5,7 @@ import { createStore } from 'vuex';
 const store = createStore({
   state() {
     return {
-      files: [],
+      files: Object.keys(localStorage),
     };
   },
   getters: {
@@ -15,12 +15,12 @@ const store = createStore({
     nextUntitled(_: any, getters: any) {
       const regex = /Untitled(\d+)?/;
       const untitledIndices: number[] = getters.files
-        .map((file: string) => file.match(regex))
-        .filter((matches: string[]) => matches)
-        .map((matches: string[]) => matches[1])
-        .filter((matchedNumber: string) => matchedNumber)
-        .map((matchedNumber: string) => +matchedNumber)
-        ;
+      .map((file: string) => file.match(regex))
+      .filter((matches: string[]) => matches)
+      .map((matches: string[]) => matches[1])
+      .filter((matchedNumber: string) => matchedNumber)
+      .map((matchedNumber: string) => +matchedNumber)
+      ;
       untitledIndices.sort();
 
       if (untitledIndices.length === 0) {
