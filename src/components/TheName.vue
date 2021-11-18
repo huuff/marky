@@ -7,7 +7,9 @@
       type="text" 
       ref="input"
       id="nameInput" 
-      @blur="endEditing">
+      @blur="endEditing"
+      @keyup.enter="endEditing"
+      >
     <span 
       v-show="!currentlyEditing"
       @click="startEditing"

@@ -1,2 +1,2 @@
 # Tasks
-* Get enter key to set name, instead of only blur
+* Fix issue where you can't save a file with a different name
