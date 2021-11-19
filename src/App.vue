@@ -13,6 +13,8 @@
       <button class="btn btn-primary mx-auto my-3" @click="save">Save</button>
     </div>
   </main>
+  <the-overwrite-modal :show="true"></the-overwrite-modal>
+  
 </template>
 
 <script lang="ts">
@@ -22,6 +24,7 @@ import TheEditor from './components/TheEditor.vue';
 import TheRender from './components/TheRender.vue';
 import TheName from './components/TheName.vue';
 import TheFileSelector from './components/TheFileSelector.vue';
+import TheOverwriteModal from '@/components/TheOverwriteModal.vue';
 
 
 export default defineComponent({
@@ -33,7 +36,7 @@ export default defineComponent({
     },
   },
   components: {
-    TheEditor, TheRender, TheName, TheFileSelector
+    TheEditor, TheRender, TheName, TheFileSelector, TheOverwriteModal
   },
   setup(props) {
     const store = useStore();
