@@ -1,6 +1,6 @@
 <template>
   <main class="container mx-auto vh-100">
-    <h1 class="display-2 text-center mb-3">Editor</h1>
+    <h1 class="display-2 text-center mb-3">Marky</h1>
     <div class="row mb-2">
       <the-name class="col" v-model="fileName"></the-name>
       <the-file-selector class="col" :current="fileName" ></the-file-selector>
@@ -16,8 +16,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, onMounted, watch, } from 'vue';
-import { useRouter } from 'vue-router';
+import { defineComponent, ref, onMounted, watch, } from 'vue';
 import { useStore } from 'vuex';
 import TheEditor from './components/TheEditor.vue';
 import TheRender from './components/TheRender.vue';
@@ -37,7 +36,6 @@ export default defineComponent({
     TheEditor, TheRender, TheName, TheFileSelector
   },
   setup(props) {
-    const router = useRouter();
     const store = useStore();
     const fileName = ref(props.routeName ?? '');
     const text = ref(""); 
