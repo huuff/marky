@@ -38,21 +38,12 @@ export default defineComponent({
   },
   setup(props) {
     const router = useRouter();
-    const text = ref(""); 
     const store = useStore();
-
-    const fileName = computed({
-      get: () => props.routeName ?? '',
-      set: (value: string) => router.replace(value),
-    });
-
-
-    function setName(name: string): void {
-      fileName.value = name;
-    }
+    const fileName = ref(props.routeName ?? '');
+    const text = ref(""); 
 
     function setFile(file: string) {
-      setName(file);
+      fileName.value = file;
       text.value = localStorage.getItem(file) ?? '';
     }
 
@@ -77,7 +68,7 @@ export default defineComponent({
       }
     });
 
-    return { text, fileName, setName, setFile, save };
+    return { text, fileName, setFile, save };
   },
 });
 </script>

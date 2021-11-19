@@ -1,4 +1,5 @@
 # Tasks
-* Fix the issue that when changing the name to an existing file, it is set as the current file
 * File drawer (force my way through bootstap) instead of file selector
 * Implement a modal (force through bootstrap, again) to require confirmation when overwriting a file
+* Fix the `eslint` warnings that appear on `npm run build`
+* I think I should just populate the store with everything (filenames and contents) and then read everything from there instead of using both store and `localStorage`. This will make migrating to using an API or something easier.

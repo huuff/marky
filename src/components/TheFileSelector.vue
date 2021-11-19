@@ -27,6 +27,7 @@ export default defineComponent({
     const router = useRouter();
     const files = computed(() => store.getters.files);
 
+    // TODO: Is there a better way? (Passing the value directly in the event declaration)
     function setFile(event: Event) {
       const selector = event.target as HTMLSelectElement;
       if (selector.value !== null) {
