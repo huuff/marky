@@ -1,7 +1,5 @@
 import { createStore } from 'vuex';
 
-// TODO: Manage to get tis typed
-
 const store = createStore({
   state() {
     return {
