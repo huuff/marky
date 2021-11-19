@@ -3,7 +3,7 @@
     <h1 class="display-2 text-center mb-3">Editor</h1>
     <div class="row mb-2">
       <the-name class="col" v-model="fileName"></the-name>
-      <the-file-selector class="col" :current="fileName" @set-file="setFile"></the-file-selector>
+      <the-file-selector class="col" :current="fileName" ></the-file-selector>
     </div>
     <div class="row h-75">
       <the-editor class="col" v-model="text"></the-editor>
@@ -16,7 +16,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, ref, computed, onMounted, watch, } from 'vue';
+import { useRouter } from 'vue-router';
+import { useStore } from 'vuex';
 import TheEditor from './components/TheEditor.vue';
 import TheRender from './components/TheRender.vue';
 import TheName from './components/TheName.vue';
@@ -31,53 +33,51 @@ export default defineComponent({
       required: false,
     },
   },
-  data: () => ({
-    text: "",
-  } as { 
-    text: string;
-    fileName: string;
-  }),
   components: {
     TheEditor, TheRender, TheName, TheFileSelector
   },
-  watch: {
-    routeName(value: string) {
-      if (this.$store.getters.fileExists(value)) {
-        this.setFile(value);
-      }
-    },
-  },
-  computed: {
-    fileName: {
-      get(): string {
-        return this.routeName ?? '';
-      },
-      set(value: string) {
-        return this.$router.replace(value);
-      }
-    },
-  },
-  mounted() {
-    if (this.routeName) {
-      this.setFile(this.routeName);
-    } else {
-      this.fileName = this.$store.getters.nextUntitled; 
+  setup(props) {
+    const router = useRouter();
+    const text = ref(""); 
+    const store = useStore();
+
+    const fileName = computed({
+      get: () => props.routeName ?? '',
+      set: (value: string) => router.replace(value),
+    });
+
+
+    function setName(name: string): void {
+      fileName.value = name;
     }
-  },
-  methods: {
-    save(): void {
-      localStorage.setItem(this.fileName, this.text); 
-      if (!this.$store.getters.fileExists(this.fileName)) {
-        this.$store.dispatch("addFile", this.fileName);
+
+    function setFile(file: string) {
+      setName(file);
+      text.value = localStorage.getItem(file) ?? '';
+    }
+
+    function save(): void {
+      localStorage.setItem(fileName.value, text.value);
+      if (!store.getters.fileExists(fileName.value)) {
+        store.dispatch("addFile", fileName.value);
       }
-    },
-    setName(name: string) {
-      this.fileName = name;
-    },
-    setFile(file: string) {
-      this.setName(file);
-      this.text = localStorage.getItem(file) ?? '';
-    },
+    }
+
+    onMounted(() => {
+      if (props.routeName) {
+        setFile(props.routeName);
+      } else {
+        fileName.value = store.getters.nextUntitled;
+      }
+    });
+
+    watch(() => props.routeName, newRoute => {
+      if (store.getters.fileExists(newRoute)) {
+        setFile(newRoute ?? '');
+      }
+    });
+
+    return { text, fileName, setName, setFile, save };
   },
 });
 </script>

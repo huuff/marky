@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, reactive, computed } from "vue";
 //@ts-ignore
 import Codemirror from "codemirror-editor-vue3";
 
@@ -14,10 +14,18 @@ import "codemirror-editor-vue3/dist/style.css";
 import "codemirror/mode/markdown/markdown.js";
 
 export default defineComponent({
+  components: {
+    Codemirror
+  },
   emits: [ "update:modelValue" ],
-  data() {
-    return {
-      cmOptions:{
+  props: {
+    modelValue: {
+      type: String,
+      required: true,
+    }
+  }, 
+  setup(props, { emit }) {
+    const cmOptions = reactive({
         mode: 'text/markdown', // Language mode
         theme: 'default', // Theme
         lineNumbers: true, // Show line number
@@ -25,25 +33,16 @@ export default defineComponent({
         indentUnit: 2, // The smart indent unit is 2 spaces in length
         foldGutter: true, // Code folding
         styleActiveLine: true, // Display the style of the selected row
-      }
-    };
+    }); 
+
+
+    const value = computed({
+      get: () => props.modelValue,
+      set: (value: string) => emit("update:modelValue", value),
+    });
+
+    return { cmOptions, value };
   },
-  props: {
-    modelValue: String,
-  }, 
-  computed: {
-    value: {
-      get() {
-        return this.modelValue;
-      },
-      set(value: string) {
-        this.$emit('update:modelValue', value);
-      },
-    },
-  },
-  components: {
-    Codemirror
-  }
 })
 </script>
 

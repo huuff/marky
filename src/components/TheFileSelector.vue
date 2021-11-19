@@ -9,7 +9,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, } from 'vue';
+import { defineComponent, computed } from 'vue';
+import { useRouter } from 'vue-router';
+import { useStore } from 'vuex';
 
 export default defineComponent({
   emits: [ "set-file" ],
@@ -19,18 +21,20 @@ export default defineComponent({
       required: true
     },
   },
-  computed: {
-    files() {
-      return this.$store.getters.files;
-    }
-  },
-  methods: {
-    setFile(event: Event) {
+
+  setup() {
+    const store = useStore();
+    const router = useRouter();
+    const files = computed(() => store.getters.files);
+
+    function setFile(event: Event) {
       const selector = event.target as HTMLSelectElement;
       if (selector.value !== null) {
-        this.$router.push(selector.value)
+        router.push(selector.value);
       }
     }
+
+    return { files, setFile };
   },
 });
 </script>

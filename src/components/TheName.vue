@@ -9,6 +9,7 @@
       id="nameInput" 
       @blur="endEditing"
       @keyup.enter="endEditing"
+      @keyup.escape="endEditing"
       >
     <span 
       v-show="!currentlyEditing"
@@ -21,7 +22,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, ref, computed, nextTick } from 'vue';
 
 export default defineComponent({
   emits: [ "update:modelValue" ],
@@ -31,32 +32,28 @@ export default defineComponent({
       required: true,
     },
   },
-  data: () => ({
-    currentlyEditing: false,
-  } as {
-    currentlyEditing: boolean;
-  }),
-  computed: {
-    name: {
-      get() {
-        return this.modelValue;
-      },
-      set(value: string) {
-        this.$emit('update:modelValue', value);
-      }
-    }
-  },
-  methods: {
-    startEditing(): void {
-      this.currentlyEditing = true;
 
-      this.$nextTick(() => {
-        (this.$refs.input as HTMLInputElement).focus();
+  setup(props, { emit }) {
+    const currentlyEditing = ref(false);
+    const input = ref<HTMLInputElement | null>(null);
+    const name = computed({
+      get: () => props.modelValue,
+      set: (value: string) => emit("update:modelValue", value),
+    });
+
+    function startEditing(): void {
+      currentlyEditing.value = true;
+      
+      nextTick(() => {
+        input.value?.focus();
       });
-    },  
-    endEditing(): void {
-      this.currentlyEditing = false;
-    },
+    }
+
+    function endEditing(): void {
+      currentlyEditing.value = false;
+    }
+
+    return { currentlyEditing, name, input, startEditing, endEditing };
   },
 });
 </script>
