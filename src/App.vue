@@ -10,10 +10,15 @@
       <the-render class="col" :input="text"></the-render>
     </div>
     <div class="text-center">
-      <button class="btn btn-primary mx-auto my-3" @click="save">Save</button>
+      <button class="btn btn-primary mx-auto my-3" @click="tryToSave">Save</button>
     </div>
   </main>
-  <the-overwrite-modal :show="true"></the-overwrite-modal>
+  <the-overwrite-modal 
+    :show="showOverwriteModal" 
+    :overwritingFile="fileName"
+    @cancel="hideOverwriteModal"
+    @save="save"
+    ></the-overwrite-modal>
   
 </template>
 
@@ -42,10 +47,24 @@ export default defineComponent({
     const store = useStore();
     const fileName = ref(props.routeName ?? '');
     const text = ref(""); 
+    const showOverwriteModal = ref(false);
 
-    function setFile(file: string) {
+    function isOverwriting(fileName: string): boolean {
+      const savedContents = localStorage.getItem(fileName);
+      return savedContents !== null && savedContents !== text.value;
+    }
+
+    function setFile(file: string): void {
       fileName.value = file;
       text.value = localStorage.getItem(file) ?? '';
+    }
+
+    function tryToSave(): void {
+      if (isOverwriting(fileName.value)) {
+        showOverwriteModal.value = true;
+      } else {
+        save();
+      }
     }
 
     function save(): void {
@@ -53,6 +72,11 @@ export default defineComponent({
       if (!store.getters.fileExists(fileName.value)) {
         store.dispatch("addFile", fileName.value);
       }
+      showOverwriteModal.value = false;
+     }
+
+    function hideOverwriteModal(): void {
+      showOverwriteModal.value = false;
     }
 
     onMounted(() => {
@@ -69,7 +93,7 @@ export default defineComponent({
       }
     });
 
-    return { text, fileName, setFile, save };
+    return { text, fileName, setFile, tryToSave, save, showOverwriteModal, hideOverwriteModal };
   },
 });
 </script>

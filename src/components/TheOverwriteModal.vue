@@ -4,15 +4,15 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">Modal title</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <h5 class="modal-title">File <span class="fst-italic">{{overwritingFile}}</span> already exists</h5>
+          <button type="button" class="btn-close" aria-label="Close" @click="this.$emit('cancel')"></button>
         </div>
         <div class="modal-body">
-          <p>Modal body text goes here.</p>
+          <p>Do you want to overwrite it?</p>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
+          <button type="button" class="btn btn-secondary" @click="this.$emit('cancel')">Cancel</button>
+          <button type="button" class="btn btn-danger" @click="this.$emit('save')">Overwrite</button>
         </div>
       </div>
     </div>
@@ -26,27 +26,32 @@ import { defineComponent, watch, onMounted, ref } from 'vue';
 import { Modal } from 'bootstrap';
 
 export default defineComponent({
+  emits: [ "save", "cancel" ],
   props: {
     show: {
       type: Boolean,
       required: true,
     },
+    overwritingFile: {
+      type: String,
+      required: true,
+    }
   },
 
   setup(props) {
-    /*const modal = ref(null);*/
-    /*let bootstrapModal: Modal = new bootstrap.Modal("#overwriteModal", {});*/
     const modal = ref<Element | null>(null);
     let bootstrapModal: null | Modal = null;
 
     onMounted(() => {
       if (modal.value) {
-        bootstrapModal = new Modal(modal.value, {});
+        bootstrapModal = new Modal(modal.value, {
+          keyboard: false,
+          backdrop: 'static',
+        });
       }
     });
 
     watch(() => props.show, (newValue: boolean) => {
-      console.log(`watching for modal show, this time: ${props.show}`);
       if (newValue) {
         bootstrapModal?.show();
       } else {
