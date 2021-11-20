@@ -22,7 +22,7 @@ const store = createStore({
       untitledIndices.sort();
 
       if (untitledIndices.length === 0) {
-        return "Untitled";
+        return "Untitled1";
       } else {
         return `Untitled${untitledIndices[untitledIndices.length - 1] + 1}`;
       }
