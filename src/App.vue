@@ -50,13 +50,13 @@ export default defineComponent({
     const showOverwriteModal = ref(false);
 
     function isOverwriting(fileName: string): boolean {
-      const savedContents = localStorage.getItem(fileName);
+      const savedContents = store.getters.contents(fileName);
       return savedContents !== null && savedContents !== text.value;
     }
 
     function setFile(file: string): void {
       fileName.value = file;
-      text.value = localStorage.getItem(file) ?? '';
+      text.value = store.getters.contents(file) ?? '';
     }
 
     function tryToSave(): void {
@@ -68,10 +68,7 @@ export default defineComponent({
     }
 
     function save(): void {
-      localStorage.setItem(fileName.value, text.value);
-      if (!store.getters.fileExists(fileName.value)) {
-        store.dispatch("addFile", fileName.value);
-      }
+      store.dispatch("saveFile", { name: fileName.value, contents: text.value });
       showOverwriteModal.value = false;
      }
 

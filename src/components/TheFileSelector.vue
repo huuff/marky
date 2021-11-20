@@ -25,7 +25,7 @@ export default defineComponent({
   setup() {
     const store = useStore();
     const router = useRouter();
-    const files = computed(() => store.getters.files);
+    const files = computed(() => store.getters.fileNames);
 
     function setFile(fileName: string) {
       if (fileName !== null) {
