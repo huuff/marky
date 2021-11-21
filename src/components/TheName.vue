@@ -2,7 +2,7 @@
   <div class="text-align-baseline">
     <label class="text-muted me-2" for="nameInput">File: </label>
     <input 
-      v-show="currentlyEditing"
+      v-if="currentlyEditing"
       v-model="name" 
       type="text" 
       ref="input"
@@ -12,7 +12,7 @@
       @keyup.escape="endEditing"
       >
     <span 
-      v-show="!currentlyEditing"
+      v-else
       @click="startEditing"
       class="clickable"
       > {{ name }}
