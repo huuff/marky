@@ -51,9 +51,9 @@ const store = createStore({
     fileExists(_: State, getters: any) {
       return (fileName: string) => getters.fileNames.includes(fileName);
     },
-    contents(state: State, getters: any) {
+    contents(state: State) {
       return (fileName: string) =>  state.files[fileName]?.contents;
-    }
+    },
   },
 
   mutations: {
