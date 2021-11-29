@@ -46,6 +46,9 @@ export default defineComponent({
           keyboard: false,
           backdrop: 'static',
         });
+        if (props.show) {
+          bootstrapModal.show();
+        }
       }
     });
 

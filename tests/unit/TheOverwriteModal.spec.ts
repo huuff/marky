@@ -11,7 +11,23 @@ describe('TheOverwriteModal.vue', () => {
         overwritingFile: "",
       }, 
     });
-    expect(wrapper.find(`#${modalId}`).isVisible()).toBe(false);
+
+    expect(wrapper.element.classList).not.toContain("show");
+  });
+
+  describe('when show is true', () => {
+    const overwritingFile = "Test Name";
+    const wrapper = mount(TheOverwriteModal, {
+      props: {
+        show: true,
+        overwritingFile
+      }, 
+    });
+
+    it("it is shown", () => {
+      expect(wrapper.element.classList).toContain("show");
+    });
+
   });
 
 });
