@@ -52,7 +52,7 @@ const store = createStore({
       return (fileName: string) => getters.fileNames.includes(fileName);
     },
     contents(state: State, getters: any) {
-      return (fileName: string) =>  state.files[fileName].contents;
+      return (fileName: string) =>  state.files[fileName]?.contents;
     }
   },
 

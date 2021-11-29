@@ -51,7 +51,7 @@ export default defineComponent({
 
     function isOverwriting(fileName: string): boolean {
       const savedContents = store.getters.contents(fileName);
-      return savedContents !== null && savedContents !== text.value;
+      return savedContents && savedContents !== text.value;
     }
 
     function setFile(file: string): void {

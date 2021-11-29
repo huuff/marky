@@ -1,5 +1,4 @@
 <template>
-  <teleport to="body">
   <div class="modal" tabindex="-1" ref="modal" id="overwriteModal">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -11,13 +10,12 @@
           <p>Do you want to overwrite it?</p>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" @click="this.$emit('cancel')">Cancel</button>
-          <button type="button" class="btn btn-danger" @click="this.$emit('save')">Overwrite</button>
+          <button type="button" class="btn btn-secondary" @click="this.$emit('cancel')" id="cancelButton">Cancel</button>
+          <button type="button" class="btn btn-danger" @click="this.$emit('save')" id="overwriteButton">Overwrite</button>
         </div>
       </div>
     </div>
   </div>
-</teleport>
 </template>
 
 
