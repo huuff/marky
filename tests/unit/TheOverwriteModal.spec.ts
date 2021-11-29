@@ -24,8 +24,24 @@ describe('TheOverwriteModal.vue', () => {
       }, 
     });
 
-    it("it is shown", () => {
+    it("is shown", () => {
       expect(wrapper.element.classList).toContain("show");
+    });
+
+    it("it contains the filename", () => {
+      expect(wrapper.html()).toContain(`<span class="fst-italic">${overwritingFile}</span>`)
+    });
+
+    it("saves when overwrite is clicked", async () => {
+      await wrapper.find("#overwriteButton").trigger("click");
+
+      expect(wrapper.emitted()).toHaveProperty("save");
+    });
+
+    it("cancels when cancel is clicked", async () => {
+      await wrapper.find("#cancelButton").trigger("click");
+
+      expect(wrapper.emitted()).toHaveProperty("cancel");
     });
 
   });

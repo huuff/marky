@@ -3,4 +3,3 @@
 * Fix the `eslint` warnings that appear on `npm run build`
 * Some notifications with alerts
 * Use firebase?
-* Test it
