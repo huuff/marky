@@ -5,12 +5,14 @@
     <button type="button" class="btn-close text-reset" aria-label="Close" @click="$emit('hide')"></button>
   </div>
   <div class="offcanvas-body row gap-2">
-    <div v-for="file in files" :key="`file-${file}`" class="card col-1" @click="setFile(file)">
+    <div v-for="file in files" :key="`file-${file}`" class="card col-sm-2 col-xl-1 px-0" @click="setFile(file)">
       <h6 class="card-header">{{file}}</h6>
       <div class="card-body">
-        <the-render
-          class="file-contents fs-6 text-nowrap"
-          :input="fileContents(file)"></the-render>
+        <div class="rendered-markdown">
+          <the-render
+            class="file-contents fs-6 text-nowrap"
+            :input="fileContents(file)"></the-render>
+        </div>
       </div>
     </div>
   </div>
@@ -72,8 +74,11 @@ export default defineComponent({
 <style>
 .card {
   cursor: pointer;
-  overflow: hidden;
   max-height: 100%;
+}
+
+.rendered-markdown {
+  overflow: hidden;
 }
 
 .file-contents {
