@@ -1,6 +1,6 @@
 import { createApp } from 'vue'
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
+import { faPencilAlt, faSave } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import App from './App.vue';
 import AppWrapper from './AppWrapper.vue'
@@ -10,6 +10,7 @@ import "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 library.add(faPencilAlt);
+library.add(faSave);
 
 const router = VueRouter.createRouter({
   history: VueRouter.createWebHistory(),
