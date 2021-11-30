@@ -11,7 +11,7 @@ function loadFilesFromLocalStorage(): FilesState {
   const files: FilesState = {};
   for (const file of Object.keys(localStorage)) {
     const fileContents = localStorage.getItem(file);
-    if (fileContents !== null) {
+    if (fileContents !== null && file !== 'loglevel:webpack-dev-server') {
       files[file] = { name: file, contents: fileContents };
     }
   }
