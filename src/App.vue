@@ -8,7 +8,7 @@
     </div>
     <div class="row h-75">
       <the-editor class="col" v-model="text"></the-editor>
-      <the-render class="col border border-2" :input="text"></the-render>
+      <rendered-markdown class="col border border-2" :input="text"></rendered-markdown>
     </div>
     <div class="text-center">
       <button class="btn btn-primary mx-auto my-3" @click="tryToSave">
@@ -29,7 +29,7 @@
 import { defineComponent, ref, onMounted, watch, } from 'vue';
 import { useStore } from 'vuex';
 import TheEditor from './components/TheEditor.vue';
-import TheRender from './components/TheRender.vue';
+import RenderedMarkdown from './components/RenderedMarkdown.vue';
 import TheName from './components/TheName.vue';
 import TheFileDrawer from '@/components/TheFileDrawer.vue';
 import TheOverwriteModal from '@/components/TheOverwriteModal.vue';
@@ -44,7 +44,7 @@ export default defineComponent({
     },
   },
   components: {
-    TheEditor, TheRender, TheName, TheFileDrawer, TheOverwriteModal
+    TheEditor, RenderedMarkdown, TheName, TheFileDrawer, TheOverwriteModal
   },
   setup(props) {
     const store = useStore();

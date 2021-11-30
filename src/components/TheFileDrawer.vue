@@ -9,9 +9,9 @@
       <h6 class="card-header">{{file}}</h6>
       <div class="card-body">
         <div class="rendered-markdown">
-          <the-render
+          <rendered-markdown
             class="file-contents fs-6 text-nowrap"
-            :input="fileContents(file)"></the-render>
+            :input="fileContents(file)"></rendered-markdown>
         </div>
       </div>
     </div>
@@ -24,11 +24,11 @@ import { defineComponent, onMounted, ref, watch, computed } from "vue";
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 import { Offcanvas } from 'bootstrap';
-import TheRender from '@/components/TheRender.vue'
+import RenderedMarkdown from '@/components/RenderedMarkdown.vue'
 
 export default defineComponent({
   emits: [ "hide" ],
-  components: { TheRender },
+  components: { RenderedMarkdown },
   props: {
     show: {
       type: Boolean,

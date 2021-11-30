@@ -1,9 +1,9 @@
 import { mount } from '@vue/test-utils';
-import TheRender from '@/components/TheRender.vue';
+import RenderedMarkdown from '@/components/RenderedMarkdown.vue';
 
 describe('TheRender.vue', () => {
   it("properly renders markdown", () => {
-    const wrapper = mount(TheRender, {
+    const wrapper = mount(RenderedMarkdown, {
       props: { input: "# Test"},
     });
 
