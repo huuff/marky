@@ -1,5 +1,6 @@
 import { mount, } from '@vue/test-utils';
 import { createStore } from 'vuex';
+import { useRouter } from 'vue-router';
 import TheFileDrawer from '@/components/TheFileDrawer.vue';
 
 const mockFiles: { [name : string]: string } = {
@@ -18,6 +19,12 @@ const mockStore = createStore({
     },
   },
 });
+
+jest.mock('vue-router', () => ({
+  useRouter: jest.fn(() => ({
+    push: () => {} // eslint-disable-line
+  }))
+}))
 
 describe('TheFileDrawer.vue', () => {
   it("is not shown when show is false", () => {
@@ -61,6 +68,18 @@ describe('TheFileDrawer.vue', () => {
           it('it contains the file contents', () => {
             expect(fileCard.find(".file-contents").text())
               .toBe(mockFiles[expectedFileName])
+          });
+
+          it('routes to file on click', async () => {
+            const push = jest.fn();
+            (useRouter as jest.Mock<any>).mockImplementationOnce(() => ({
+              push
+            }))
+
+            await fileCard.trigger('click');
+
+            expect(push).toHaveBeenCalledTimes(1);
+            expect(push).toHaveBeenCalledWith(expectedFileName);
           });
         }
       });
