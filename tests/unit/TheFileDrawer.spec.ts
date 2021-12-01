@@ -3,9 +3,9 @@ import { createStore } from 'vuex';
 import TheFileDrawer from '@/components/TheFileDrawer.vue';
 
 const mockFiles: { [name : string]: string } = {
- "File1": "",
- "File2": "",
- "File3": "",
+ "File1": "contents1",
+ "File2": "contents2",
+ "File3": "contents3",
 };
 
 const mockStore = createStore({
