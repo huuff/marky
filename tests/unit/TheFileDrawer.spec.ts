@@ -49,6 +49,21 @@ describe('TheFileDrawer.vue', () => {
       it('there is one card for each', () => {
         expect(fileCards.length).toBe(Object.keys(mockFiles).length); 
       });
+
+      describe("with each file", () => {
+        for (const [i, fileCard] of fileCards.entries()) {
+          const expectedFileName = Object.keys(mockFiles)[i];
+          it('it contains a header with the name', () => {
+            expect(fileCard.find(".card-header").text())
+              .toBe(expectedFileName)
+          });
+          
+          it('it contains the file contents', () => {
+            expect(fileCard.find(".file-contents").text())
+              .toBe(mockFiles[expectedFileName])
+          });
+        }
+      });
     });
   });
 });
