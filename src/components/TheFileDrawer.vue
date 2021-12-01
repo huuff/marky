@@ -5,7 +5,7 @@
     <button type="button" class="btn-close text-reset" aria-label="Close" @click="$emit('hide')"></button>
   </div>
   <div class="offcanvas-body row gap-2">
-    <div v-for="file in files" :key="`file-${file}`" class="card col-sm-2 col-xl-1 px-0" @click="setFile(file)">
+    <div v-for="file in files" :key="`file-${file}`" class="file-card card col-sm-2 col-xl-1 px-0" @click="setFile(file)">
       <h6 class="card-header">{{file}}</h6>
       <div class="card-body">
         <div class="rendered-markdown">
