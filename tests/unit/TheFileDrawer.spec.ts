@@ -39,10 +39,18 @@ describe('TheFileDrawer.vue', () => {
   });
 
   describe('when show is true', () => {
+    const push = jest.fn();
+    (useRouter as jest.Mock).mockImplementationOnce(() => ({
+      push
+    }));
+
     const wrapper = mount(TheFileDrawer, {
       props: { show: true },
       global: {
         provide: { store: mockStore },
+        mocks: {
+
+        }
       },
     });
 
@@ -71,15 +79,12 @@ describe('TheFileDrawer.vue', () => {
           });
 
           it('routes to file on click', async () => {
-            const push = jest.fn();
-            (useRouter as jest.Mock<any>).mockImplementationOnce(() => ({
-              push
-            }))
 
             await fileCard.trigger('click');
 
             expect(push).toHaveBeenCalledTimes(1);
             expect(push).toHaveBeenCalledWith(expectedFileName);
+            push.mockClear();
           });
         }
       });
