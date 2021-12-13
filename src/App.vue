@@ -1,4 +1,5 @@
 <template>
+  <the-save-alert :show="showSaveAlert" :fileName="fileName" :isOverwriting="isOverwriting(fileName)"></the-save-alert>
   <main class="container mx-auto vh-100">
     <the-file-drawer :show="showFileDrawer" @hide="hideFileDrawer"></the-file-drawer>
     <h1 class="display-2 text-center mb-3">Marky</h1>
@@ -33,6 +34,7 @@ import RenderedMarkdown from './components/RenderedMarkdown.vue';
 import TheName from './components/TheName.vue';
 import TheFileDrawer from '@/components/TheFileDrawer.vue';
 import TheOverwriteModal from '@/components/TheOverwriteModal.vue';
+import TheSaveAlert from '@/components/TheSaveAlert.vue';
 
 const props = defineProps({
   routeName: {
@@ -46,8 +48,10 @@ const fileName = ref(props.routeName ?? '');
 const text = ref(""); 
 const showOverwriteModal = ref(false);
 const showFileDrawer = ref(false);
+const showSaveAlert = ref(false);
 
 function isOverwriting(fileName: string): boolean {
+  console.log(`Calling isOverwriting with filename ${fileName}`);
   const savedContents = store.getters.contents(fileName);
   return savedContents && savedContents !== text.value;
 }
@@ -68,7 +72,10 @@ function tryToSave(): void {
 function save(): void {
   store.dispatch("saveFile", { name: fileName.value, contents: text.value });
   showOverwriteModal.value = false;
- }
+  showSaveAlert.value = true;
+
+  setTimeout(() => showSaveAlert.value = false, 1500);
+}
 
 function hideOverwriteModal(): void {
   showOverwriteModal.value = false;
