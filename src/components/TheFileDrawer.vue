@@ -19,56 +19,50 @@
 </div> 
 </template>
 
-<script lang="ts">
-import { defineComponent, onMounted, ref, watch, computed } from "vue";
+<script setup lang="ts">
+import { onMounted, ref, watch, computed } from "vue";
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 import { Offcanvas } from 'bootstrap';
 import RenderedMarkdown from '@/components/RenderedMarkdown.vue'
 
-export default defineComponent({
-  emits: [ "hide" ],
-  components: { RenderedMarkdown },
-  props: {
-    show: {
-      type: Boolean,
-      required: true,
-    },
+const emit = defineEmits(["hide"]);
+const props = defineProps({
+  show: {
+    type: Boolean,
+    required: true,
   },
-  setup(props, { emit }) {
-    const store = useStore(); 
-    const router = useRouter();
-    const offcanvasElement = ref<Element | null>(null);
-    const files = computed(() => store.getters.fileNames)
-    const fileContents = store.getters.contents;
+});
 
-    let offcanvas: null | Offcanvas;
+const store = useStore(); 
+const router = useRouter();
+const offcanvasElement = ref<Element | null>(null);
+const files = computed(() => store.getters.fileNames)
+const fileContents = store.getters.contents;
 
-    onMounted(() => {
-       if (offcanvasElement.value) {
-         offcanvas = new Offcanvas(offcanvasElement.value);
-         if (props.show) {
-           offcanvas.show();
-         }
-       }
-    });
+let offcanvas: null | Offcanvas;
 
-    watch(() => props.show, (newValue: boolean) => {
-      if (newValue) {
-        offcanvas?.show();
-      } else {
-        offcanvas?.hide();
-      }
-    });
+onMounted(() => {
+   if (offcanvasElement.value) {
+     offcanvas = new Offcanvas(offcanvasElement.value);
+     if (props.show) {
+       offcanvas.show();
+     }
+   }
+});
 
-    function setFile(fileName: string): void {
-      router.push(fileName);
-      emit("hide");
-    }
-
-    return { files, offcanvasElement, setFile, fileContents, };
+watch(() => props.show, (newValue: boolean) => {
+  if (newValue) {
+    offcanvas?.show();
+  } else {
+    offcanvas?.hide();
   }
 });
+
+function setFile(fileName: string): void {
+  router.push(fileName);
+  emit("hide");
+}
 </script>
 
 <style>

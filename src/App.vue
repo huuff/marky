@@ -25,8 +25,8 @@
   
 </template>
 
-<script lang="ts">
-import { defineComponent, ref, onMounted, watch, } from 'vue';
+<script setup lang="ts">
+import { ref, onMounted, watch, } from 'vue';
 import { useStore } from 'vuex';
 import TheEditor from './components/TheEditor.vue';
 import RenderedMarkdown from './components/RenderedMarkdown.vue';
@@ -34,82 +34,62 @@ import TheName from './components/TheName.vue';
 import TheFileDrawer from '@/components/TheFileDrawer.vue';
 import TheOverwriteModal from '@/components/TheOverwriteModal.vue';
 
-
-export default defineComponent({
-  name: 'App',
-  props: {
-    routeName: {
-      type: String,
-      required: false,
-    },
+const props = defineProps({
+  routeName: {
+    type: String,
+    required: false,
   },
-  components: {
-    TheEditor, RenderedMarkdown, TheName, TheFileDrawer, TheOverwriteModal
-  },
-  setup(props) {
-    const store = useStore();
-    const fileName = ref(props.routeName ?? '');
-    const text = ref(""); 
-    const showOverwriteModal = ref(false);
-    const showFileDrawer = ref(false);
+});
 
-    function isOverwriting(fileName: string): boolean {
-      const savedContents = store.getters.contents(fileName);
-      return savedContents && savedContents !== text.value;
-    }
+const store = useStore();
+const fileName = ref(props.routeName ?? '');
+const text = ref(""); 
+const showOverwriteModal = ref(false);
+const showFileDrawer = ref(false);
 
-    function setFile(file: string): void {
-      fileName.value = file;
-      text.value = store.getters.contents(file) ?? '';
-    }
+function isOverwriting(fileName: string): boolean {
+  const savedContents = store.getters.contents(fileName);
+  return savedContents && savedContents !== text.value;
+}
 
-    function tryToSave(): void {
-      if (isOverwriting(fileName.value)) {
-        showOverwriteModal.value = true;
-      } else {
-        save();
-      }
-    }
+function setFile(file: string): void {
+  fileName.value = file;
+  text.value = store.getters.contents(file) ?? '';
+}
 
-    function save(): void {
-      store.dispatch("saveFile", { name: fileName.value, contents: text.value });
-      showOverwriteModal.value = false;
-     }
+function tryToSave(): void {
+  if (isOverwriting(fileName.value)) {
+    showOverwriteModal.value = true;
+  } else {
+    save();
+  }
+}
 
-    function hideOverwriteModal(): void {
-      showOverwriteModal.value = false;
-    }
+function save(): void {
+  store.dispatch("saveFile", { name: fileName.value, contents: text.value });
+  showOverwriteModal.value = false;
+ }
 
-    function hideFileDrawer(): void {
-      showFileDrawer.value = false;
-    }
+function hideOverwriteModal(): void {
+  showOverwriteModal.value = false;
+}
 
-    onMounted(() => {
-      if (props.routeName) {
-        setFile(props.routeName);
-      } else {
-        fileName.value = store.getters.nextUntitled;
-      }
-    });
+function hideFileDrawer(): void {
+  showFileDrawer.value = false;
+}
 
-    watch(() => props.routeName, newRoute => {
-      if (store.getters.fileExists(newRoute)) {
-        setFile(newRoute ?? '');
-      }
-    });
+onMounted(() => {
+  if (props.routeName) {
+    setFile(props.routeName);
+  } else {
+    fileName.value = store.getters.nextUntitled;
+  }
+});
 
-    return { 
-      text, 
-      fileName, 
-      setFile, 
-      tryToSave, 
-      save, 
-      showOverwriteModal, 
-      hideOverwriteModal,
-      showFileDrawer,
-      hideFileDrawer,
-    };
-  },
+watch(() => props.routeName, newRoute => {
+  if (store.getters.fileExists(newRoute)) {
+    setFile(newRoute ?? '');
+  }
 });
 </script>
 

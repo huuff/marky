@@ -18,48 +18,43 @@
   </div>
 </template>
 
-
-<script lang="ts">
-import { defineComponent, watch, onMounted, ref } from 'vue';
+<script setup lang="ts">
+import { watch, onMounted, ref } from 'vue';
 import { Modal } from 'bootstrap';
 
-export default defineComponent({
-  emits: [ "save", "cancel" ],
-  props: {
-    show: {
-      type: Boolean,
-      required: true,
-    },
-    overwritingFile: {
-      type: String,
-      required: true,
-    }
+const emit = defineEmits([ "save", "cancel" ]);
+const props = defineProps({
+  show: {
+    type: Boolean,
+    required: true,
   },
-
-  setup(props) {
-    const modal = ref<Element | null>(null);
-    let bootstrapModal: null | Modal = null;
-
-    onMounted(() => {
-      if (modal.value) {
-        bootstrapModal = new Modal(modal.value, {
-          keyboard: false,
-          backdrop: 'static',
-        });
-        if (props.show) {
-          bootstrapModal.show();
-        }
-      }
-    });
-
-    watch(() => props.show, (newValue: boolean) => {
-      if (newValue) {
-        bootstrapModal?.show();
-      } else {
-        bootstrapModal?.hide();
-      }
-    });
-    return { modal };
+  overwritingFile: {
+    type: String,
+    required: true,
   },
 });
+
+const modal = ref<Element | null>(null);
+let bootstrapModal: null | Modal = null;
+
+onMounted(() => {
+  if (modal.value) {
+    bootstrapModal = new Modal(modal.value, {
+      keyboard: false,
+      backdrop: 'static',
+    });
+    if (props.show) {
+      bootstrapModal.show();
+    }
+  }
+});
+
+watch(() => props.show, (newValue: boolean) => {
+  if (newValue) {
+    bootstrapModal?.show();
+  } else {
+    bootstrapModal?.hide();
+  }
+});
 </script>
+
