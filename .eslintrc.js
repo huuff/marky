@@ -5,6 +5,11 @@ module.exports = {
     node: true
   },
 
+  globals: {
+    defineProps: "readonly",
+    defineEmits: "readonly",
+  },
+
   'extends': [
     'plugin:vue/vue3-essential',
     'eslint:recommended',
