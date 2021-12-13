@@ -2,49 +2,38 @@
   <codemirror :options="cmOptions" v-model:value="value" id="editor"></codemirror>
 </template>
 
-<script lang="ts">
-import { defineComponent, reactive, computed } from "vue";
+<script setup lang="ts">
+import { reactive, computed } from "vue";
 //@ts-ignore
-import Codemirror from "codemirror-editor-vue3";
+import Codemirror from 'codemirror-editor-vue3';
+import 'codemirror-editor-vue3/dist/style.css';
+import 'codemirror/mode/markdown/markdown.js';
 
-// plugin-style
-import "codemirror-editor-vue3/dist/style.css";
+const props = defineProps({
+  modelValue: {
+    type: String,
+    required: true,
+  }
+});
 
-// language
-import "codemirror/mode/markdown/markdown.js";
+const emit = defineEmits(["update:modelValue"]);
 
-export default defineComponent({
-  components: {
-    Codemirror
-  },
-  emits: [ "update:modelValue" ],
-  props: {
-    modelValue: {
-      type: String,
-      required: true,
-    }
-  }, 
-  setup(props, { emit }) {
-    const cmOptions = reactive({
-        mode: 'text/markdown', // Language mode
-        theme: 'default', // Theme
-        lineNumbers: true, // Show line number
-        smartIndent: true, // Smart indent
-        indentUnit: 2, // The smart indent unit is 2 spaces in length
-        foldGutter: true, // Code folding
-        styleActiveLine: true, // Display the style of the selected row
-    }); 
+const cmOptions = reactive({
+  mode: 'text/markdown',
+  theme: 'default',
+  lineNumbers: true,
+  smartIndent: true,
+  indentUnit: 2,
+  foldGutter: true,
+  styleActiveLine: true,
+});
 
-
-    const value = computed({
-      get: () => props.modelValue,
-      set: (value: string) => emit("update:modelValue", value),
-    });
-
-    return { cmOptions, value };
-  },
-})
+const value = computed({
+  get: () => props.modelValue,
+  set: (value: string) => emit("update:modelValue", value)
+});
 </script>
+
 
 <style >
 .CodeMirror {
