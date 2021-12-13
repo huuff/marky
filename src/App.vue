@@ -1,8 +1,8 @@
 <template>
-  <the-save-alert 
+  <the-action-alert
     :show="showSaveAlert" 
     :fileName="fileName" 
-    :actionTaken="lastTakenAction"></the-save-alert>
+    :actionTaken="lastTakenAction"></the-action-alert>
   <main class="container mx-auto vh-100">
     <the-file-drawer :show="showFileDrawer" @hide="hideFileDrawer"></the-file-drawer>
     <h1 class="display-2 text-center mb-3">Marky</h1>
@@ -37,7 +37,7 @@ import RenderedMarkdown from './components/RenderedMarkdown.vue';
 import TheName from './components/TheName.vue';
 import TheFileDrawer from '@/components/TheFileDrawer.vue';
 import TheOverwriteModal from '@/components/TheOverwriteModal.vue';
-import TheSaveAlert from '@/components/TheSaveAlert.vue';
+import TheActionAlert from '@/components/TheActionAlert.vue';
 import { Action } from '@/actions';
 
 const props = defineProps({
