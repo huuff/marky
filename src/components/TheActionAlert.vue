@@ -1,11 +1,12 @@
 <template>
-<div class="alert text-center w-50 mx-auto fixed-top" :class="`alert-${color}`" v-show="show" role="alert">
-  File <span class="fst-italic">{{fileName}}</span> was {{actionDescription}}.
-</div>
+<transition name="fade">
+  <div class="alert text-center w-50 mx-auto fixed-top" :class="`alert-${color}`" v-show="show" role="alert">
+    File <span class="fst-italic">{{fileName}}</span> was {{actionDescription}}.
+  </div>
+</transition>
 </template>
 
 <script setup lang="ts">
-// TODO: fade animations
 import { ref, computed, PropType } from 'vue';
 import { Action } from '@/actions';
 
@@ -44,3 +45,15 @@ const actionDescription = computed(() => {
 
 
 </script>
+
+<style>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>
