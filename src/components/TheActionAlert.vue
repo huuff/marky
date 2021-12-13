@@ -20,7 +20,7 @@ const props = defineProps({
   },
   actionTaken: {
     type: String as PropType<Action>,
-    required: true,
+    required: false,
   },
 });
 
