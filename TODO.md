@@ -1,2 +1,1 @@
 # Tasks
-* Test `TheActionAlert.vue`
