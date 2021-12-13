@@ -1,13 +1,13 @@
 <template>
 <div class="alert text-center w-50 mx-auto fixed-top" :class="`alert-${color}`" v-show="show" role="alert">
-  File {{fileName}} was {{isOverwriting ? 'overwritten' : 'saved'}}.
+  File <span class="fst-italic">{{fileName}}</span> was {{actionDescription}}.
 </div>
 </template>
 
 <script setup lang="ts">
-// TODO: The overwritten : saved part is not working
 // TODO: fade animations
-import { ref } from 'vue';
+import { ref, computed, PropType } from 'vue';
+import { Action } from '@/actions';
 
 const props = defineProps({
   show: {
@@ -18,12 +18,29 @@ const props = defineProps({
     type: String,
     required: true,
   },
-  isOverwriting: {
-    type: Boolean,
+  actionTaken: {
+    type: String as PropType<Action>,
     required: true,
   },
 });
 
-const color = ref('primary');
+const color = computed(() => {
+  if (props.actionTaken == 'overwrite')
+    return 'warning';
+  else if (props.actionTaken == 'load')
+    return 'success';
+  else
+    return 'primary';
+});
+
+const actionDescription = computed(() => {
+  if (props.actionTaken == 'overwrite')
+    return 'overwritten';
+  else if (props.actionTaken == 'load')
+    return 'loaded';
+  else
+    return 'saved';
+});
+
 
 </script>

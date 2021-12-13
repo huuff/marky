@@ -1,5 +1,8 @@
 <template>
-  <the-save-alert :show="showSaveAlert" :fileName="fileName" :isOverwriting="isOverwriting(fileName)"></the-save-alert>
+  <the-save-alert 
+    :show="showSaveAlert" 
+    :fileName="fileName" 
+    :actionTaken="lastTakenAction"></the-save-alert>
   <main class="container mx-auto vh-100">
     <the-file-drawer :show="showFileDrawer" @hide="hideFileDrawer"></the-file-drawer>
     <h1 class="display-2 text-center mb-3">Marky</h1>
@@ -35,6 +38,7 @@ import TheName from './components/TheName.vue';
 import TheFileDrawer from '@/components/TheFileDrawer.vue';
 import TheOverwriteModal from '@/components/TheOverwriteModal.vue';
 import TheSaveAlert from '@/components/TheSaveAlert.vue';
+import { Action } from '@/actions';
 
 const props = defineProps({
   routeName: {
@@ -49,9 +53,9 @@ const text = ref("");
 const showOverwriteModal = ref(false);
 const showFileDrawer = ref(false);
 const showSaveAlert = ref(false);
+const lastTakenAction = ref<Action | null>(null); 
 
 function isOverwriting(fileName: string): boolean {
-  console.log(`Calling isOverwriting with filename ${fileName}`);
   const savedContents = store.getters.contents(fileName);
   return savedContents && savedContents !== text.value;
 }
@@ -59,6 +63,9 @@ function isOverwriting(fileName: string): boolean {
 function setFile(file: string): void {
   fileName.value = file;
   text.value = store.getters.contents(file) ?? '';
+  showSaveAlert.value = true;
+  lastTakenAction.value = 'load';
+  delayHideAlert();
 }
 
 function tryToSave(): void {
@@ -70,10 +77,14 @@ function tryToSave(): void {
 }
 
 function save(): void {
+  lastTakenAction.value = isOverwriting(fileName.value) ? 'overwrite' : 'save';
   store.dispatch("saveFile", { name: fileName.value, contents: text.value });
   showOverwriteModal.value = false;
   showSaveAlert.value = true;
+  delayHideAlert();
+}
 
+function delayHideAlert() {
   setTimeout(() => showSaveAlert.value = false, 1500);
 }
 
