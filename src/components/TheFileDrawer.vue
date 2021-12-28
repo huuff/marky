@@ -60,7 +60,6 @@ const fileContents = store.getters.contents;
 
 const offcanvasElement = ref<Element | null>(null);
 let offcanvas: null | Offcanvas;
-const carouselElement = ref<Element | null>(null);
 
 onMounted(() => {
    if (offcanvasElement.value) {
@@ -69,9 +68,6 @@ onMounted(() => {
        offcanvas.show();
      }
    }
-   /*if (carouselElement.value) {*/
-     /*carousel = new Carousel(carouselElement.value);*/
-   /*}*/
 });
 
 watch(() => props.show, (newValue: boolean) => {
