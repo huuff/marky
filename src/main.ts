@@ -5,8 +5,8 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import App from './App.vue';
 import AppWrapper from './AppWrapper.vue'
 import * as VueRouter from 'vue-router';
-import store from './store';
 import "bootstrap";
+import { createPinia } from "pinia"
 import "bootstrap/dist/css/bootstrap.min.css";
 
 library.add(faPencilAlt);
@@ -23,5 +23,5 @@ const router = VueRouter.createRouter({
 createApp(AppWrapper)
   .component('font-awesome-icon', FontAwesomeIcon)
   .use(router)
-  .use(store)
+  .use(createPinia())
   .mount('#app')

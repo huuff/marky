@@ -40,7 +40,7 @@
 
 <script setup lang="ts">
 import { onMounted, ref, watch, computed } from "vue";
-import { useStore } from 'vuex';
+import { useStore } from '@/store';
 import { useRouter } from 'vue-router';
 import { Offcanvas, } from 'bootstrap';
 import RenderedMarkdown from '@/components/RenderedMarkdown.vue'
@@ -55,8 +55,8 @@ const props = defineProps({
 
 const store = useStore(); 
 const router = useRouter();
-const files = computed(() => store.getters.fileNames)
-const fileContents = store.getters.contents;
+const files = computed(() => store.fileNames)
+const fileContents = store.contents;
 
 const offcanvasElement = ref<Element | null>(null);
 let offcanvas: null | Offcanvas;

@@ -31,7 +31,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, watch, } from 'vue';
-import { useStore } from 'vuex';
+import { useStore } from '@/store';
 import TheEditor from './components/TheEditor.vue';
 import RenderedMarkdown from './components/RenderedMarkdown.vue';
 import TheName from './components/TheName.vue';
@@ -56,13 +56,13 @@ const showSaveAlert = ref(false);
 const lastTakenAction = ref<Action | null>(null); 
 
 function isOverwriting(fileName: string): boolean {
-  const savedContents = store.getters.contents(fileName);
-  return savedContents && savedContents !== text.value;
+  const savedContents = store.contents(fileName);
+  return !!savedContents && savedContents !== text.value;
 }
 
 function setFile(file: string): void {
   fileName.value = file;
-  text.value = store.getters.contents(file) ?? '';
+  text.value = store.contents(file) ?? '';
   showSaveAlert.value = true;
   lastTakenAction.value = 'load';
   delayHideAlert();
@@ -78,7 +78,7 @@ function tryToSave(): void {
 
 function save(): void {
   lastTakenAction.value = isOverwriting(fileName.value) ? 'overwrite' : 'save';
-  store.dispatch("saveFile", { name: fileName.value, contents: text.value });
+  store.saveFile({ name: fileName.value, contents: text.value})
   showOverwriteModal.value = false;
   showSaveAlert.value = true;
   delayHideAlert();
@@ -100,12 +100,12 @@ onMounted(() => {
   if (props.routeName) {
     setFile(props.routeName);
   } else {
-    fileName.value = store.getters.nextUntitled;
+    fileName.value = store.nextUntitled;
   }
 });
 
 watch(() => props.routeName, newRoute => {
-  if (store.getters.fileExists(newRoute)) {
+  if (store.fileExists(newRoute ?? "")) {
     setFile(newRoute ?? '');
   }
 });

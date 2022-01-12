@@ -1,7 +1,9 @@
-import { mount, } from '@vue/test-utils';
-import { createStore } from 'vuex';
+import { mount, VueWrapper, DOMWrapper } from '@vue/test-utils';
+import { createTestingPinia } from "@pinia/testing";
 import { useRouter } from 'vue-router';
+import { useStore } from "@/store";
 import TheFileDrawer from '@/components/TheFileDrawer.vue';
+import { File } from "@/file";
 
 const mockFiles: { [name : string]: string } = {
  "File1": "contents1",
@@ -9,31 +11,40 @@ const mockFiles: { [name : string]: string } = {
  "File3": "contents3",
 };
 
-const mockStore = createStore({
-  getters: {
-    fileNames() {
-      return Object.keys(mockFiles);
-    },
-    contents() {
-      return (fileName: string) => mockFiles[fileName];
-    },
-  },
-});
-
 jest.mock('vue-router', () => ({
   useRouter: jest.fn(() => ({
     push: () => {} // eslint-disable-line
   }))
 }))
 
+function mockStore() {
+  const store = useStore();
+  //store.files.value = 
+
+  const filesToMock = Object.keys(mockFiles)
+    .map(fileName => ({ [fileName]: {
+      name: fileName,
+      contents: mockFiles[fileName] 
+    }}))
+    .reduce((prev, next) => ({ ...prev, ...next}));
+  store.files = filesToMock;
+}
+
+beforeEach(() => mockStore())
+
+function allFileCards(wrapper: VueWrapper<any>): DOMWrapper<Element>[] {
+  return wrapper.findAll(".file-card");
+}
+
 describe('TheFileDrawer.vue', () => {
   it("is not shown when show is false", () => {
     const wrapper = mount(TheFileDrawer, {
       props: { show: false },
       global: {
-        provide: { store: mockStore },
+        plugins: [ createTestingPinia() ],
       },
     });
+    mockStore();
 
     expect(wrapper.element.classList).not.toContain("show");
   });
@@ -47,12 +58,10 @@ describe('TheFileDrawer.vue', () => {
     const wrapper = mount(TheFileDrawer, {
       props: { show: true },
       global: {
-        provide: { store: mockStore },
-        mocks: {
-
-        }
+        plugins: [ createTestingPinia() ],
       },
     });
+    mockStore();
 
     it('is shown', () => {
       expect(wrapper.element.classList).toContain("show");
@@ -62,7 +71,7 @@ describe('TheFileDrawer.vue', () => {
       const fileCards = wrapper.findAll(".file-card");
 
       it('there is one card for each', () => {
-        expect(fileCards.length).toBe(Object.keys(mockFiles).length); 
+        expect(allFileCards(wrapper).length).toBe(Object.keys(mockFiles).length); 
       });
 
       describe("with each file", () => {

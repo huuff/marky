@@ -1,5 +1,5 @@
-import { createStore } from 'vuex';
-import { File } from './file';
+import { defineStore } from "pinia";
+import { File } from "./file";
 
 type FilesState = { [name: string]: File };
 
@@ -19,20 +19,17 @@ function loadFilesFromLocalStorage(): FilesState {
   return files;
 }
 
-const store = createStore({
-  state() {
-    return {
-      files: loadFilesFromLocalStorage(),
-    } as State;
-  },
+export const useStore = defineStore("main", {
+  state: () => ({
+    files: loadFilesFromLocalStorage(),
+  }),
   getters: {
-    fileNames(state: State) {
-      return Object.keys(state.files); 
+    fileNames(state) {
+      return Object.keys(state.files);
     },
-    // Why is type narrowing not working?
-    nextUntitled(_: State, getters: any) {
+    nextUntitled(_) {
       const regex = /Untitled(\d+)?/;
-      const untitledIndices: number[] = getters.fileNames
+      const untitledIndices: number[] = this.fileNames
         .map((file: string) => file.match(regex))
         .filter((matches: RegExpMatchArray | null) => matches)
         .map((matches: RegExpMatchArray | null) => matches as RegExpMatchArray)
@@ -48,25 +45,17 @@ const store = createStore({
         return `Untitled${untitledIndices[untitledIndices.length - 1] + 1}`;
       }
     },
-    fileExists(_: State, getters: any) {
-      return (fileName: string) => getters.fileNames.includes(fileName);
+    fileExists(_) {
+      return (fileName: string) => this.fileNames.includes(fileName);
     },
-    contents(state: State) {
-      return (fileName: string) =>  state.files[fileName]?.contents;
-    },
-  },
-
-  mutations: {
-    saveFile(state: State, payload: File ) {
-      state.files[payload.name] = payload; 
+    contents(_) {
+      return (fileName: string) => this.files[fileName]?.contents;
     }
   },
   actions: {
-    saveFile(context: any, payload: File) {
-      context.commit("saveFile", payload)
-      localStorage.setItem(payload.name, payload.contents);
+    saveFile(file: File) {
+      this.files[file.name] = file;
+      localStorage.setItem(file.name, file.contents);
     }
   }
 });
-
-export default store;

@@ -17,11 +17,12 @@
     "codemirror-editor-vue3": "^0.2.4",
     "core-js": "^3.6.5",
     "markdown-it": "^12.2.0",
+    "pinia": "^2.0.9",
     "vue": "^3.0.0",
-    "vue-router": "^4.0.12",
-    "vuex": "^4.0.2"
+    "vue-router": "^4.0.12"
   },
   "devDependencies": {
+    "@pinia/testing": "^0.0.9",
     "@types/bootstrap": "^5.1.6",
     "@types/jest": "^24.0.19",
     "@types/markdown-it": "^12.2.3",
